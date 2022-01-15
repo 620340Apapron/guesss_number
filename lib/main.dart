@@ -1,7 +1,5 @@
-import 'dart:js';
 import 'package:flutter/material.dart';
 import 'game.dart';
-
 
 void main() {
   runApp(const MyApp());
@@ -26,11 +24,11 @@ class HomePage extends State<MyApp> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(title,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18.0,
               )),
           content: Text(feed,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18.0,
               )),
           actions: [
@@ -54,11 +52,11 @@ class HomePage extends State<MyApp> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(title,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18.0,
               )),
           content: Text(msg,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18.0,
               )),
           actions: [
@@ -198,4 +196,53 @@ class HomePage extends State<MyApp> {
       ),
     );
   }
+  //
+  // Widget _buildMainContent() {
+  //   if (_input == null) {
+  //     return Column(
+  //       mainAxisAlignment: MainAxisAlignment.center,
+  //       children: [],
+  //     );
+  //   } else {
+  //     return Column(
+  //       children: [
+  //         Padding(
+  //           padding: const EdgeInsets.all(16.0),
+  //           child: Text(_input!,
+  //               style: const TextStyle(
+  //                 fontSize: 18.0,
+  //               )),
+  //         ),
+  //         if (newGame)
+  //           TextButton(
+  //             onPressed: () {
+  //               setState(() {
+  //                 game = Game();
+  //                 newGame = false;
+  //                 _input = null;
+  //               });
+  //             },
+  //             child: Padding(
+  //                 padding: const EdgeInsets.all(16.0),
+  //                 child: Container(
+  //                   decoration: BoxDecoration(
+  //                     color: Colors.teal,
+  //                     //borderRadius: BorderRadius.circular(.0),
+  //                     border: Border.all(width: 1.0),
+  //                   ),
+  //                   child: const Padding(
+  //                     padding: EdgeInsets.all(10.0),
+  //                     child: Text(
+  //                       'NEW GAME',
+  //                       style: TextStyle(
+  //                         fontSize: 18.0,
+  //                       ),
+  //                     ),
+  //                   ),
+  //                 )),
+  //           ),
+  //       ],
+  //     );
+  //   }
+  // }
 }
