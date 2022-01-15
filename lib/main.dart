@@ -5,86 +5,26 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  HomePage createState() => HomePage();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.green,
+      ),
+      home: HomePage(),
+    );
+  }
 }
 
-class HomePage extends State<MyApp> {
+class HomePage extends StatelessWidget {
   final _controller = TextEditingController();
-  String? _input;
   var game = Game();
-  bool newGame = false;
-
-  void _showMaterialDialog1(String title, String feed) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title,
-              style: const TextStyle(
-                fontSize: 18.0,
-              )),
-          content: Text(feed,
-              style: const TextStyle(
-                fontSize: 18.0,
-              )),
-          actions: [
-            // ปุ่ม OK ใน dialog
-            TextButton(
-              child: const Text('OK'),
-              onPressed: () {
-                // ปิด dialog
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void _showMaterialDialog(String title, String msg) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(title,
-              style: const TextStyle(
-                fontSize: 18.0,
-              )),
-          content: Text(msg,
-              style: const TextStyle(
-                fontSize: 18.0,
-              )),
-          actions: [
-            // ปุ่ม OK ใน dialog
-            TextButton(
-              child: const Text('OK'),
-              onPressed: () {
-                // ปิด dialog
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    game = Game();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+  bool isCorrect = false;
+  String? _input;
 
   @override
   Widget build(BuildContext context) {
@@ -168,24 +108,47 @@ class HomePage extends State<MyApp> {
                       var count = game.doGuess(guess);
                       var sum = game.guessCount;
                       if (count == 0) {
-                        newGame = true;
-                        _showMaterialDialog("RESULT",
-                            '$_input ถูกต้องแล้วครับ 🎉\nคุณทายทั้งหมด $sum ครั้ง');
+                        isCorrect = true;
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Result'),
+                                content: Text(
+                                    '$guess เป็นคำตอบที่ถูกต้อง เก่งมาก กล้ามาก ขอบใจ🎉\n คุณทายทั้งหมด $sum ครั้ง'),
+                              );
+                            });
                         _controller.clear();
                       } else if (count == 1) {
-                        _showMaterialDialog1(
-                            "RESULT", '$_input มากเกินไป กรุณาลองใหม่');
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Result'),
+                                content: Text('$guess มากกว่าคำตอบ'),
+                              );
+                            });
                         _controller.clear();
-                      } else {
-                        _showMaterialDialog1(
-                            "RESULT", '$_input น้อยเกินไป กรุณาลองใหม่');
+                      } else if (count == -1) {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text('Result'),
+                                content: Text('$guess น้อยกว่าคำตอบ'),
+                              );
+                            });
                         _controller.clear();
                       }
                     } else {
-                      _showMaterialDialog('Error',
-                          'กรอกข้อมูลไม่ถูกต้อง ให้กรอกเฉพาะตัวเลขเท่านั้น');
-                      _controller.clear();
-                      newGame = false;
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Error!'),
+                              content: Text('โปรดกรอกตัวเลขเท่านั้น!!!'),
+                            );
+                          });
                     }
                   },
                 ),
@@ -196,53 +159,4 @@ class HomePage extends State<MyApp> {
       ),
     );
   }
-  //
-  // Widget _buildMainContent() {
-  //   if (_input == null) {
-  //     return Column(
-  //       mainAxisAlignment: MainAxisAlignment.center,
-  //       children: [],
-  //     );
-  //   } else {
-  //     return Column(
-  //       children: [
-  //         Padding(
-  //           padding: const EdgeInsets.all(16.0),
-  //           child: Text(_input!,
-  //               style: const TextStyle(
-  //                 fontSize: 18.0,
-  //               )),
-  //         ),
-  //         if (newGame)
-  //           TextButton(
-  //             onPressed: () {
-  //               setState(() {
-  //                 game = Game();
-  //                 newGame = false;
-  //                 _input = null;
-  //               });
-  //             },
-  //             child: Padding(
-  //                 padding: const EdgeInsets.all(16.0),
-  //                 child: Container(
-  //                   decoration: BoxDecoration(
-  //                     color: Colors.teal,
-  //                     //borderRadius: BorderRadius.circular(.0),
-  //                     border: Border.all(width: 1.0),
-  //                   ),
-  //                   child: const Padding(
-  //                     padding: EdgeInsets.all(10.0),
-  //                     child: Text(
-  //                       'NEW GAME',
-  //                       style: TextStyle(
-  //                         fontSize: 18.0,
-  //                       ),
-  //                     ),
-  //                   ),
-  //                 )),
-  //           ),
-  //       ],
-  //     );
-  //   }
-  // }
 }
